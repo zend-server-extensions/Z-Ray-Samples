@@ -1,0 +1,46 @@
+<ul class="tabs">
+	<li>
+        <input type="radio" name="demo-tabs" id="tab-demo1" checked /> 
+		<label for="tab-demo1">Graph</label>
+    	<div id="tab-content-demo1" class="tab-content">
+    		<canvas id="samples-custom-resources-chart" width="200" height="200" />
+    	</div>
+    </li>
+	<li>
+        <input type="radio" name="demo-tabs" id="tab-demo2" /> 
+		<label for="tab-demo2">Tab2</label>
+    	<div id="tab-content-demo2" class="tab-content">
+    		Tab 2 content
+    	</div>
+    </li>
+	<li>
+        <input type="radio" name="demo-tabs" id="tab-demo3" /> 
+		<label for="tab-demo3">Tab3</label>
+    	<div id="tab-content-demo3" class="tab-content">
+    		Tab 3 content
+    	</div>
+    </li>
+</ul>
+
+<script type="text/javascript">
+<?php echo $params['resources']['chart']; ?>
+
+(function() {
+	zray.registerDataHandler('samples', 'stats', function(extensionData, requestData) {
+		var colors = [
+            {'color': '#F7464A', 'highlight': '#FF5A5E'},
+            {'color': '#46BFBD', 'highlight': '#5AD3D1'},
+            {'color': '#FDB45C', 'highlight': '#FFC870'},
+            {'color': '#949FB1', 'highlight': '#A8B3C5'},
+            {'color': '#4D5360', 'highlight': '#616774'}
+        ];
+		var pieData = [];
+		jQuery.each(extensionData, function(key, data) {
+			pieData.push({'label': data.name, 'value': data.count, 'color': colors[key].color, 'highlight': colors[key].highlight});
+		});
+
+       	var ctx = document.getElementById("samples-custom-resources-chart").getContext("2d");
+       	var myPie = new Chart(ctx).Pie(pieData);
+	});
+})();
+</script>

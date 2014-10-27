@@ -1,0 +1,59 @@
+<?php 
+$tableParams = array(
+	'tableId' 			=> 'samples-custom-table',
+    'tableWidth'        => '4',
+);
+?>
+
+<?php echo $this->zrayTable($tableParams); //zrayTableHtml ?>
+
+<script type="text/javascript">
+(function() {
+	var storage = zray.getStorage('samplesCustomTree');
+
+	// create main table
+	var maintable = zray.createTable(storage, jQuery('#<?php echo $tableParams['tableId']; ?>'));
+	maintable.setColumns([
+		{
+			"label": "The First Number",
+			"propertyName": "Number1",
+			"sortable": true,
+			"width": '20%',
+			"getHtml": function(value, record) {
+				return 'the first number is <b>' + value + '</b>';
+			}		
+		},
+		{
+			"label": "The Second Number",
+			"propertyName": "Number2",
+			"sortable": true,
+			"width": '20%',
+			"getHtml": function(value, record) {
+				return 'the second number is <u>' + value + '</u>';
+			}		
+		},
+		{
+			"label": "The Result",
+			"propertyName": "Result",
+			"sortable": true,
+			"width": '60%',
+			"getHtml": function(value, record) {
+				var elem = jQuery('<span>' + value + ' (click)</span>');
+				elem.click(function() {
+					alert('You clicked ' + value);
+				});
+				return elem;
+			}	
+		}
+	]);
+	// create main table - end
+
+	// create pager and search
+	zray.createPager(storage, jQuery('#<?php echo $params['pagerId']; ?>'));
+	zray.createSearch(storage, jQuery('#<?php echo $params['searchId']; ?>'), maintable);
+	
+	zray.registerDataHandler('samples', 'defaultTable', function(extensionData, requestData) {
+		storage.setData(extensionData);
+	});
+})();
+</script>
