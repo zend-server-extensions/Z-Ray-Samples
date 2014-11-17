@@ -1,0 +1,109 @@
+<?php 
+$tableParams = array(
+	'tableId' 			=> 'samples-products-table',
+    'tableWidth'        => '3',
+    'summaryTableId'    => 'samples-products-summary-table',
+    'summaryTableWidth' => '1',
+);
+?>
+
+<?php echo $this->zrayTable($tableParams); //zrayTableHtml ?>
+
+<script type="text/javascript">
+(function() {
+	var storage = zray.getStorage('samplesSummaryTree');
+
+	// create main table
+	var maintable = zray.createTable(storage, jQuery('#<?php echo $tableParams['tableId']; ?>'));
+	maintable.setColumns([
+		{
+			"label": "Name",
+			"propertyName": "name",
+			"sortable": true,
+		},
+		{
+			"label": "Version",
+			"propertyName": "version",
+			"sortable": true,
+		},
+		{
+			"label": "OS",
+			"propertyName": "os",
+			"sortable": true,
+		},
+		{
+			"label": "Developer",
+			"propertyName": "developer",
+			"sortable": true,
+		}
+	]);
+	// create main table - end
+
+	// create the summary table
+	var summaryTable = zray.createSummaryTable(storage, jQuery('#<?php echo $tableParams['summaryTableId']; ?>'));
+
+	// set the columns structure
+	summaryTable.setColumns([
+       {
+            label: 'OS',
+            propertyName: 'os',
+            width: '10%',
+            getHtml: function(value, record) {
+                return summaryTable.createCheckboxColumn(value, record, summaryTable);
+            }
+       },
+       {
+           label: 'OS',
+           propertyName: 'os',
+           width: '80%',
+       },
+       {
+			label: 'Count',
+			propertyName: 'count',
+			width: '10%',
+			attributes: {'class': 'zdb-numerical'},
+			getHtml: function(val) {
+				return '(' + val + ')';
+			}
+		}
+    ]);
+
+	// set by which column the user choice will filter
+	summaryTable.setFilterColumn('os');
+
+	// set callback function to create the table rows from all the data
+	// return an array of rows, with columns that match to setColumns
+	summaryTable.setUpdateCallback(function (data) {
+		if (! data) return [];
+
+		var aggregated = {};
+		$zendDevBar.each(data, function(key, observer){
+			if (aggregated[observer.os]) {
+				aggregated[observer.os]++;
+			} else {
+				aggregated[observer.os] = 1;
+			}
+		});
+
+		if (Object.keys(aggregated).length == 0) {
+			return [];
+		}
+		
+		var normalized = [];
+		normalized.push({'os': 'All', 'count': jQuery.map(aggregated, function(v){return v}).reduce(function(acc, item){return acc += item})});
+		
+		return normalized.concat($zendDevBar.map(aggregated, function(count, os){
+			return {'os': os, 'count': count};
+		}));
+	});
+	// create summary table - end
+
+	// create pager and search
+	zray.createPager(storage, jQuery('#<?php echo $params['pagerId']; ?>'));
+	zray.createSearch(storage, jQuery('#<?php echo $params['searchId']; ?>'), maintable);
+	
+	zray.registerDataHandler('samples', 'products', function(extensionData, requestData) {
+		storage.setData(extensionData);
+	});
+})();
+</script>

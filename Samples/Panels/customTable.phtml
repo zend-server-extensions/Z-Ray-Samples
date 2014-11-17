@@ -9,34 +9,43 @@ $tableParams = array(
 
 <script type="text/javascript">
 (function() {
-	var storage = zray.getStorage('samplesCustomTree');
+	var storage = zray.getStorage('samplesCustomTable');
 
 	// create main table
 	var maintable = zray.createTable(storage, jQuery('#<?php echo $tableParams['tableId']; ?>'));
 	maintable.setColumns([
 		{
-			"label": "The First Number",
-			"propertyName": "Number1",
+			"label": "The Name",
+			"propertyName": "name",
 			"sortable": true,
 			"width": '20%',
 			"getHtml": function(value, record) {
-				return 'the first number is <b>' + value + '</b>';
+				return 'Name is <b>' + value + '</b>';
 			}		
 		},
 		{
-			"label": "The Second Number",
-			"propertyName": "Number2",
+			"label": "The Version",
+			"propertyName": "version",
 			"sortable": true,
 			"width": '20%',
 			"getHtml": function(value, record) {
-				return 'the second number is <u>' + value + '</u>';
+				return 'Latest version <u>' + value + '</u>';
 			}		
 		},
 		{
-			"label": "The Result",
-			"propertyName": "Result",
+			"label": "The Developer",
+			"propertyName": "developer",
 			"sortable": true,
-			"width": '60%',
+			"width": '20%',
+			"getHtml": function(value, record) {
+				return '<u>' + value + '</u> is the developer';
+			}		
+		},
+		{
+			"label": "The OS",
+			"propertyName": "os",
+			"sortable": true,
+			"width": '40%',
 			"getHtml": function(value, record) {
 				var elem = jQuery('<span>' + value + ' (click)</span>');
 				elem.click(function() {

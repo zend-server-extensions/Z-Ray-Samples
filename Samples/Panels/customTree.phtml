@@ -1,0 +1,24 @@
+<?php 
+$tableParams = array(
+	'tableId' 			=> 'samples-custom-tree',
+    'tableWidth'        => '4',
+);
+?>
+
+<?php echo $this->zrayTable($tableParams); //zrayTableHtml ?>
+
+<script type="text/javascript">
+
+(function() {
+	var storage = zray.getStorage('samplesCustomTree');
+
+	// create main table
+	var maintable = zray.createTreeTable(storage, jQuery('#<?php echo $tableParams['tableId']; ?>'));
+// 	maintable.setColumns();
+	// create main table - end
+	
+	zray.registerDataHandler('samples', 'products', function(extensionData, requestData) {
+		storage.setData(extensionData);
+	});
+})();
+</script>

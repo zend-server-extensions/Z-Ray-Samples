@@ -9,18 +9,19 @@ class Samples {
     }
     
     public function multExit($context, & $storage) {
-        $storage['defaultTable'][] = array(
-            'Number1' => $context['functionArgs'][0],
-            'Number2' => $context['functionArgs'][1],
-            'Result'  => $context['returnValue']
-        );
-        
         $storage['multiplyGeneralTree'][] = array(
             'col1' => $context['functionArgs'][0], 'col2' => 'val2', 'params' => array(
                 array('col1' => 'val1.1', 'col2' => 'val2.1', 'params' => 'aaa'),
                 array('col1' => 'val1.2', 'col2' => 'val2.2', 'params' => 'bbb')
             )
         );
+    }
+    
+    public function productsExit($context, & $storage) {
+        foreach ($context['returnValue'] as $product) {
+            $storage['defaultTable'][] = $product;
+            $storage['products'][$product['name']] = $product;
+        }
     }
 }
 
@@ -36,6 +37,9 @@ $zre->traceFunction('Samples::run', array($zraySamples, 'runEnter'), function() 
 
 // bind to mult method
 $zre->traceFunction('Samples::mult', function() {}, array($zraySamples, 'multExit'));
+
+// bind to mult method
+$zre->traceFunction('Samples::getProducts', function() {}, array($zraySamples, 'productsExit'));
 
 // bind to stats method
 $zre->traceFunction('Samples::stats', function($context, & $storage) {

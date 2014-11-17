@@ -6,10 +6,14 @@ class Module extends \ZRay\ZRayModule {
 	
 	public function config() {
 	    return array(
+	        'extension' => array(
+				'name' => 'samples',
+			),
 	        // Prevent those default panels from being displayed
 	        'defaultPanels' => array(
 	            'multiplyGeneralTree' => false,
-	            'stats'               => false
+	            'stats'               => false,
+	            'products'            => false,
 	        ),
 	        // configure all custom panels
 	        'panels' => array(
@@ -21,11 +25,25 @@ class Module extends \ZRay\ZRayModule {
 	                'searchId' 		=> 'samples-custom-table-search',
 	                'pagerId'		=> 'samples-custom-table-pager',
 	            ),
-	            'generalTable' => array(
+	            'summaryTable' => array(
 	                'display'       => true,
 	                'logo'          => 'logo.png',
-	                'menuTitle' 	=> 'General Table',
-	                'panelTitle'	=> 'General Table',
+	                'menuTitle' 	=> 'Summary Table',
+	                'panelTitle'	=> 'Summary Table',
+	                'searchId' 		=> 'samples-summary-table-search',
+	                'pagerId'		=> 'samples-summary-table-pager',
+	            ),
+	            'customTree' => array(
+	                'display'       => true,
+	                'logo'          => 'logo.png',
+	                'menuTitle' 	=> 'Custom Tree',
+	                'panelTitle'	=> 'Custom Tree Table',
+	            ),
+	            'generalTree' => array(
+	                'display'       => true,
+	                'logo'          => 'logo.png',
+	                'menuTitle' 	=> 'General Tree',
+	                'panelTitle'	=> 'General Tree Table',
 	            ),
 	            'customResources' => array(
 	                'display'       => true,
