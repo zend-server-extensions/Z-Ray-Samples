@@ -4,6 +4,11 @@ Z-Ray-Samples
 This is a Sample extension to demonstrate adding functionality to the Zend Server 
 Z-Ray. Resulting in additional tab(s) to be presented in the browser.
 
+Requirements
+------------
+
+Zend Server 8.0, not 8.0 BETA
+
 Installation
 ------------
 
